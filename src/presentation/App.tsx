@@ -1,19 +1,24 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from '@/presentation/features/auth/components/LoginPage';
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-export default function App() {
-  return (
-    <BrowserRouter>
+// Code-splitting: LoginPage sólo se descarga cuando navegues a /login
+const LoginPage = lazy(() => import('./features/auth/components/LoginPage'));
+
+const App: React.FC = () => (
+  <BrowserRouter>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          Cargando…
+        </div>
+      }
+    >
       <Routes>
-        {/* Ruta principal redirige a /login */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-
-        {/* Tu ruta de login */}
         <Route path="/login" element={<LoginPage />} />
-
-        {/* Opcional: cualquier otro path también redirige */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* ...otras rutas */}
       </Routes>
-    </BrowserRouter>
-  );
-}
+    </Suspense>
+  </BrowserRouter>
+);
+
+export default App;
