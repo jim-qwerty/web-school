@@ -1,4 +1,3 @@
-// src/presentation/features/dashboard/components/SubsystemDashboard.tsx
 import React from 'react'
 import { Link } from 'react-router-dom'
 import type { Subsystem } from '../types'
@@ -72,13 +71,13 @@ const subsystems: Subsystem[] = [
 
 const SubsystemDashboard: React.FC = () => (
   <div className="bg-gray-50 py-12">
-    {/* Márgenes laterales ampliados en móvil/tablet/desktop */}
     <div className="mx-auto max-w-screen-xl px-8 sm:px-16 lg:px-24">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {subsystems.map((s) => (
-          <div
+          <Link
             key={s.id}
-            className="w-full bg-white rounded-2xl shadow-lg flex flex-col justify-between"
+            to={s.link}
+            className="w-full bg-white rounded-2xl shadow-lg flex flex-col justify-between cursor-pointer hover:shadow-xl transition"
           >
             <div className="p-6 flex items-center">
               <div
@@ -93,15 +92,7 @@ const SubsystemDashboard: React.FC = () => (
             <p className="px-6 text-gray-600 text-sm flex-grow">
               {s.description}
             </p>
-            <div className="p-6">
-              <Link
-                to={s.link}
-                className="block w-full text-center py-2 border-2 border-purple-600 rounded-lg hover:bg-purple-50 text-purple-600 font-medium transition"
-              >
-                Ver detalles
-              </Link>
-            </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
