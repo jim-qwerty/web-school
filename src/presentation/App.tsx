@@ -2,21 +2,19 @@
 import  { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import SidebarLayout from './layouts/SidebarLayout'
-import { admisionesNav, /*rrhhNav*/ } from './config/navItems'
+import { admisionesNav, gestionAcademicaNav } from './config/navItems'
 
-const LoginPage          = lazy(() => import('./features/auth/components/LoginPage'))
-const SubsystemDashboard = lazy(() => import('./features/dashboard/components/SubsystemDashboard'))
+const LoginPage           = lazy(() => import('./features/auth/components/LoginPage'))
+const SubsystemDashboard  = lazy(() => import('./features/dashboard/components/SubsystemDashboard'))
 
 // ——————— ADMISIONES ———————
-const AdmisionesPage = lazy(() => import('./features/admisiones/components/Dashboard_admisiones'))
-// const StudentsPage   = lazy(() => import('./features/admisiones/components/StudentsPage'))
-// const CoursesPage    = lazy(() => import('./features/admisiones/components/CoursesPage'))
-// const CalendarPage   = lazy(() => import('./features/admisiones/components/CalendarPage'))
-// const SettingsPage   = lazy(() => import('./features/admisiones/components/SettingsPage'))
+const AdmisionesPage      = lazy(() => import('./features/admisiones/components/Main_admisiones'))
 
-// ——————— RRHH ———————
-// const RRHHPage       = lazy(() => import('./features/rrhh/components/Dashboard_rrhh'))
-// const PayrollPage    = lazy(() => import('./features/rrhh/components/PayrollPage'))
+// ——————— GESTIÓN ACADÉMICA ———————
+const GestionAcademicaPage = lazy(() => import('./features/gestion-academica/components/gestionAcademica'))
+
+// ——————— RRHH (comentada) ———————
+// const RRHHPage = lazy(() => import('./features/rrhh/components/Dashboard_rrhh'))
 
 export default function App() {
   return (
@@ -33,7 +31,7 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/"        element={<SubsystemDashboard />} />
 
-          {/* 2. Sección ADMISIONES con sidebar */}
+          {/* 2. Sección ADMISIONES */}
           <Route
             path="admisiones/*"
             element={
@@ -44,14 +42,25 @@ export default function App() {
             }
           >
             <Route index element={<AdmisionesPage />} />
-            {/* <Route path="students" element={<StudentsPage />} /> */}
-            {/* <Route path="courses"  element={<CoursesPage />} /> */}
-            {/* <Route path="calendar" element={<CalendarPage />} /> */}
-            {/* <Route path="settings" element={<SettingsPage />} /> */}
+            {/* aquí podrías añadir más rutas de Admisiones */}
+          </Route>
+
+          {/* 3. Sección GESTIÓN ACADÉMICA */}
+          <Route
+            path="gestion-academica/*"
+            element={
+              <SidebarLayout
+                items={gestionAcademicaNav}
+                basePath="/gestion-academica"
+              />
+            }
+          >
+            <Route index element={<GestionAcademicaPage />} />
+            {/* aquí podrías añadir hijos de Gestión Académica */}
           </Route>
 
           {/*
-          // 3. Sección RRHH con el mismo layout (comentada)
+          // 4. Sección RRHH
           <Route
             path="rrhh/*"
             element={
@@ -62,11 +71,10 @@ export default function App() {
             }
           >
             <Route index element={<RRHHPage />} />
-            <Route path="payroll" element={<PayrollPage />} />
           </Route>
           */}
 
-          {/* 4. Cualquier otra ruta */}
+          {/* 5. Cualquier otra ruta */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>

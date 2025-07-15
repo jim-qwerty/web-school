@@ -18,3 +18,10 @@ export const admisionesNav: NavItem[] = [
   { name: 'Traslados',     href: 'traslados',    icon: CogIcon },
   { name: 'Usuarios',      href: 'usuarios',     icon: UsersIcon },
 ]
+
+export const gestionAcademicaNav: NavItem[] = [
+  { name: 'Dashboard',     href: '',             icon: HomeIcon },
+  { name: 'Configuración', href: 'configuracion', icon: CogIcon },
+  { name: 'Alumnos',       href: 'students',     icon: UsersIcon },
+  
+]
