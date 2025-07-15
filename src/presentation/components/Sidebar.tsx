@@ -1,44 +1,38 @@
 // src/presentation/components/Sidebar.tsx
+
 import { NavLink, useLocation } from 'react-router-dom';
-import {
-  HomeIcon,
-  UsersIcon,
-  BookOpenIcon,
-  CalendarIcon,
-  CogIcon,
-} from 'lucide-react';
+import type { NavItem } from '../types';
 
-const navItems = [
-  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-  { name: 'Alumnos',    href: '/students',  icon: UsersIcon },
-  { name: 'Cursos',     href: '/courses',   icon: BookOpenIcon },
-  { name: 'Calendario', href: '/calendar',  icon: CalendarIcon },
-  { name: 'Ajustes',    href: '/settings',  icon: CogIcon },
-];
+interface SidebarProps {
+  items: NavItem[];
+  basePath: string;            // <-- agregamos este prop
+}
 
-export default function Sidebar() {
+export default function Sidebar({ items, basePath }: SidebarProps) {
   const { pathname } = useLocation();
 
   return (
-    <aside className="flex flex-col w-64 h-screen px-4 py-8 bg-white border-r">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-8">
-        SchoolLama
-      </h2>
+    <aside className="flex flex-col w-52 h-screen px-3 py-6 bg-white border-r">
+      <h2 className="text-xl font-semibold text-gray-800 mb-6">SchoolLama</h2>
       <nav className="flex-1">
-        <ul className="space-y-2">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
+        <ul className="space-y-1">
+          {items.map(item => {
+            const fullPath = `${basePath}/${item.href}`;     // absolute
+            const isActive = pathname === fullPath;
             const Icon = item.icon;
             return (
               <li key={item.href}>
                 <NavLink
-                  to={item.href}
-                  className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                  to={fullPath}
+                  end
+                  className={`
+                    flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors
                     ${isActive
                       ? 'bg-gray-100 text-purple-600'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'}`}
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'}
+                  `}
                 >
-                  <Icon className="w-5 h-5 mr-3" />
+                  <Icon className="w-4 h-4 mr-2" />
                   {item.name}
                 </NavLink>
               </li>
