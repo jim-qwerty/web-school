@@ -1,20 +1,24 @@
 // src/presentation/App.tsx
-import  { Suspense, lazy } from 'react'
+import { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import SidebarLayout from './layouts/SidebarLayout'
 import { admisionesNav, gestionAcademicaNav } from './config/navItems'
 
-const LoginPage           = lazy(() => import('./features/auth/components/LoginPage'))
-const SubsystemDashboard  = lazy(() => import('./features/dashboard/components/SubsystemDashboard'))
+const LoginPage              = lazy(() => import('./features/auth/components/LoginPage'))
+const SubsystemDashboard     = lazy(() => import('./features/dashboard/components/SubsystemDashboard'))
 
 // ——————— ADMISIONES ———————
-const AdmisionesPage      = lazy(() => import('./features/admisiones/components/Main_admisiones'))
+const AdmisionesPage         = lazy(() => import('./features/admisiones/components/Dashboard'))
+const Configuracion          = lazy(() => import('./features/admisiones/components/Configuracion'))
+const Estudiantes            = lazy(() => import('./features/admisiones/components/Estudiantes'))
+const Apoderados             = lazy(() => import('./features/admisiones/components/Apoderados'))
+const Admision               = lazy(() => import('./features/admisiones/components/Admision'))
+const Matricula              = lazy(() => import('./features/admisiones/components/Matricula'))
+const Traslados              = lazy(() => import('./features/admisiones/components/RectificadosTraslados'))
+const Usuarios               = lazy(() => import('./features/admisiones/components/Usuarios'))
 
 // ——————— GESTIÓN ACADÉMICA ———————
-const GestionAcademicaPage = lazy(() => import('./features/gestion-academica/components/gestionAcademica'))
-
-// ——————— RRHH (comentada) ———————
-// const RRHHPage = lazy(() => import('./features/rrhh/components/Dashboard_rrhh'))
+const GestionAcademicaPage   = lazy(() => import('./features/gestion-academica/components/gestionAcademica'))
 
 export default function App() {
   return (
@@ -29,7 +33,7 @@ export default function App() {
         <Routes>
           {/* 1. Rutas públicas */}
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/"        element={<SubsystemDashboard />} />
+          <Route path="/" element={<SubsystemDashboard />} />
 
           {/* 2. Sección ADMISIONES */}
           <Route
@@ -42,7 +46,14 @@ export default function App() {
             }
           >
             <Route index element={<AdmisionesPage />} />
-            {/* aquí podrías añadir más rutas de Admisiones */}
+            <Route path="dashboard" element={<AdmisionesPage />} />
+            <Route path="configuracion" element={<Configuracion />} />
+            <Route path="estudiantes" element={<Estudiantes />} />
+            <Route path="apoderados" element={<Apoderados />} />
+            <Route path="admision" element={<Admision />} />
+            <Route path="matricula" element={<Matricula />} />
+            <Route path="traslados" element={<Traslados />} />
+            <Route path="usuarios" element={<Usuarios />} />
           </Route>
 
           {/* 3. Sección GESTIÓN ACADÉMICA */}
@@ -56,12 +67,11 @@ export default function App() {
             }
           >
             <Route index element={<GestionAcademicaPage />} />
-            {/* aquí podrías añadir hijos de Gestión Académica */}
+            {/* hijos de Gestión Académica */}
           </Route>
 
-          {/*
-          // 4. Sección RRHH
-          <Route
+          {/* 4. Sección RRHH (comentada) */}
+          {/* <Route
             path="rrhh/*"
             element={
               <SidebarLayout
@@ -71,8 +81,7 @@ export default function App() {
             }
           >
             <Route index element={<RRHHPage />} />
-          </Route>
-          */}
+          </Route> */}
 
           {/* 5. Cualquier otra ruta */}
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -9,9 +9,9 @@ import {
 import type { NavItem } from '../types'
 
 export const admisionesNav: NavItem[] = [
-  { name: 'Dashboard',     href: '',             icon: HomeIcon },
+  { name: 'Dashboard',     href: 'dashboard',             icon: HomeIcon },
   { name: 'Configuración', href: 'configuracion', icon: CogIcon },
-  { name: 'Alumnos',       href: 'students',     icon: UsersIcon },
+  { name: 'Alumnos',       href: 'estudiantes',     icon: UsersIcon },
   { name: 'Apoderados',    href: 'apoderados',   icon: UsersIcon },
   { name: 'Admisión',      href: 'admision',     icon: BookOpenIcon },
   { name: 'Matrícula',     href: 'matricula',    icon: CalendarIcon },
