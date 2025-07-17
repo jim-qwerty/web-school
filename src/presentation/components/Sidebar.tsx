@@ -13,7 +13,7 @@ export default function Sidebar({ items, basePath }: SidebarProps) {
   return (
     // font-sans hereda Inter vía tu configuración global
     <aside className="flex flex-col w-52 h-screen px-3 py-6 bg-white border-r font-sans">
-      <h2 className="text-xl font-semibold text-gray-800 mb-6">SchoolLama</h2>
+      <h2 className="text-xl font-semibold text-gray-800 mb-6">School Jim</h2>
       <nav className="flex-1">
         <ul className="space-y-1.5">
           {items.map(item => {

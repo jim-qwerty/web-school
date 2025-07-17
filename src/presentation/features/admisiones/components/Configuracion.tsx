@@ -33,12 +33,32 @@ import { Plus, Upload } from "lucide-react"
 export default function ConfiguracionPage() {
   // Estado para manejar múltiples códigos modulares
   const [codigos, setCodigos] = useState<string[]>([""])
-
   const agregarCodigo = () => setCodigos([...codigos, ""])
   const actualizarCodigo = (index: number, value: string) => {
     const nuevos = [...codigos]
     nuevos[index] = value
     setCodigos(nuevos)
+  }
+
+  // Nivel seleccionado (evita warning de "assigned but never used")
+  const [nivel, setNivel] = useState<string>("")
+
+  // Estado para Grados/Secciones dinámicos
+  const [secciones, setSecciones] = useState<
+    { grado: string; seccion: string; cupo: string }[]
+  >([{ grado: "", seccion: "", cupo: "" }])
+
+  const agregarSeccion = () =>
+    setSecciones([...secciones, { grado: "", seccion: "", cupo: "" }])
+
+  const actualizarSeccion = (
+    idx: number,
+    field: "grado" | "seccion" | "cupo",
+    value: string
+  ) => {
+    const copia = [...secciones]
+    copia[idx][field] = value
+    setSecciones(copia)
   }
 
   return (
@@ -64,7 +84,6 @@ export default function ConfiguracionPage() {
                   placeholder="Ej. 12345"
                 />
               ))}
-              {/* Aquí usamos agregarCodigo */}
               <Button
                 variant="outline"
                 size="sm"
@@ -91,50 +110,44 @@ export default function ConfiguracionPage() {
             {/* Año Lectivo */}
             <div className="space-y-1">
               <Label htmlFor="anio">Año Lectivo</Label>
-              <div className="relative">
-                <Select>
-                  <SelectTrigger id="anio" className="w-full">
-                    <SelectValue placeholder="Seleccione año" />
-                  </SelectTrigger>
-                  <SelectContent className="w-full">
-                    <SelectItem value="2024">2024</SelectItem>
-                    <SelectItem value="2025">2025</SelectItem>
-                    <SelectItem value="2026">2026</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select>
+                <SelectTrigger id="anio" className="w-full">
+                  <SelectValue placeholder="Seleccione año" />
+                </SelectTrigger>
+                <SelectContent className="w-full">
+                  <SelectItem value="2024">2024</SelectItem>
+                  <SelectItem value="2025">2025</SelectItem>
+                  <SelectItem value="2026">2026</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Fases */}
             <div className="space-y-1">
               <Label htmlFor="fases">Fases</Label>
-              <div className="relative">
-                <Select>
-                  <SelectTrigger id="fases" className="w-full">
-                    <SelectValue placeholder="I, II" />
-                  </SelectTrigger>
-                  <SelectContent className="w-full">
-                    <SelectItem value="I">Fase I</SelectItem>
-                    <SelectItem value="II">Fase II</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select>
+                <SelectTrigger id="fases" className="w-full">
+                  <SelectValue placeholder="I, II" />
+                </SelectTrigger>
+                <SelectContent className="w-full">
+                  <SelectItem value="I">Fase I</SelectItem>
+                  <SelectItem value="II">Fase II</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Periodos Evaluación */}
             <div className="space-y-1">
               <Label htmlFor="periodos">Periodos Evaluación</Label>
-              <div className="relative">
-                <Select>
-                  <SelectTrigger id="periodos" className="w-full">
-                    <SelectValue placeholder="Bimestres/Trimestres" />
-                  </SelectTrigger>
-                  <SelectContent className="w-full">
-                    <SelectItem value="bimestres">Bimestres</SelectItem>
-                    <SelectItem value="trimestres">Trimestres</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select>
+                <SelectTrigger id="periodos" className="w-full">
+                  <SelectValue placeholder="Bimestres/Trimestres" />
+                </SelectTrigger>
+                <SelectContent className="w-full">
+                  <SelectItem value="bimestres">Bimestres</SelectItem>
+                  <SelectItem value="trimestres">Trimestres</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
 
@@ -144,9 +157,9 @@ export default function ConfiguracionPage() {
         </Card>
 
         {/* Módulo 2: Secciones a través de Tabs */}
-        <Card>
+        <Card className="bg-gray-900 text-white">
           <CardHeader>
-            <Tabs defaultValue="grados" className="space-y-4">
+            <Tabs defaultValue="grados">
               <TabsList>
                 <TabsTrigger value="grados">Grados y Secciones</TabsTrigger>
                 <TabsTrigger value="plantillas">Plantillas</TabsTrigger>
@@ -156,7 +169,25 @@ export default function ConfiguracionPage() {
 
           <CardContent>
             <Tabs defaultValue="grados">
-              <TabsContent value="grados">
+              <TabsContent value="grados" className="space-y-4">
+                {/* Select de Nivel (ahora con value para evitar warning) */}
+                <div className="space-y-1">
+                  <Label htmlFor="nivel" className="text-white">
+                    Nivel
+                  </Label>
+                  <Select value={nivel} onValueChange={setNivel}>
+                    <SelectTrigger id="nivel" className="w-48">
+                      <SelectValue placeholder="Seleccione nivel" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="inicial">Inicial</SelectItem>
+                      <SelectItem value="primaria">Primaria</SelectItem>
+                      <SelectItem value="secundaria">Secundaria</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Tabla dinámica de Grados/Secciones */}
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -166,20 +197,63 @@ export default function ConfiguracionPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {[1, 2, 3, 4, 5].map((grado) => (
-                      <TableRow key={grado}>
-                        <TableCell>{`Grado ${grado}`}</TableCell>
+                    {secciones.map((s, i) => (
+                      <TableRow key={i}>
+                        {/* Grado: ahora Select */}
                         <TableCell>
-                          <Input placeholder="A, B, C" />
+                          <Select
+                            value={s.grado}
+                            onValueChange={(v) =>
+                              actualizarSeccion(i, "grado", v)
+                            }
+                          >
+                            <SelectTrigger className="w-24">
+                              <SelectValue placeholder="Grado" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="1">1°</SelectItem>
+                              <SelectItem value="2">2°</SelectItem>
+                              <SelectItem value="3">3°</SelectItem>
+                              <SelectItem value="4">4°</SelectItem>
+                              <SelectItem value="5">5°</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </TableCell>
+
+                        {/* Sección */}
                         <TableCell>
-                          <Input type="number" placeholder="30" className="w-24" />
+                          <Input
+                            placeholder="A, B,…"
+                            value={s.seccion}
+                            onChange={(e) =>
+                              actualizarSeccion(i, "seccion", e.target.value)
+                            }
+                          />
+                        </TableCell>
+
+                        {/* Cupo Máximo */}
+                        <TableCell>
+                          <Input
+                            type="number"
+                            placeholder="30"
+                            className="w-20"
+                            value={s.cupo}
+                            onChange={(e) =>
+                              actualizarSeccion(i, "cupo", e.target.value)
+                            }
+                          />
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
-                <Button variant="outline" className="mt-4">
+
+                {/* Botón Agregar Sección (ahora usa onClick) */}
+                <Button
+                  variant="outline"
+                  className="mt-2 text-white"
+                  onClick={agregarSeccion}
+                >
                   <Plus className="mr-2 h-4 w-4" />
                   Agregar Grado/Sección
                 </Button>
@@ -188,13 +262,15 @@ export default function ConfiguracionPage() {
               <TabsContent value="plantillas">
                 <div className="flex items-center space-x-3 mb-2">
                   <Upload className="h-5 w-5" />
-                  <Label htmlFor="plantilla">Subir Nueva Plantilla</Label>
+                  <Label htmlFor="plantilla" className="text-white">
+                    Subir Nueva Plantilla
+                  </Label>
                 </div>
                 <Input
                   id="plantilla"
                   type="file"
                   accept=".xlsx,.docx"
-                  className="mb-4"
+                  className="mb-4 bg-white text-black"
                 />
                 <Table>
                   <TableHeader>
