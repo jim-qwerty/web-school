@@ -21,7 +21,7 @@ export default function SidebarLayout({ items, basePath }: SidebarLayoutProps) {
         <Topbar />
 
         {/* — Resto de la página */}
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 px-3 py-0 overflow-auto">
           <Outlet />
         </main>
       </div>

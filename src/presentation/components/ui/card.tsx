@@ -51,7 +51,7 @@ export const CardTitle = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <p ref={ref} className={cn("text-lg font-semibold leading-none", className)} {...props} />
+  <p ref={ref} className={cn("text-sm font-semibold leading-none", className)} {...props} />
 ))
 CardTitle.displayName = "CardTitle"
 

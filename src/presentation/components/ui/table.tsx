@@ -10,7 +10,7 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
     <div className="w-full overflow-auto">
       <table
         ref={ref}
-        className={cn("w-full caption-bottom text-sm border-collapse", className)}
+        className={cn("w-full caption-bottom text-xs border-collapse", className)}
         {...props}
       >
         {children}
