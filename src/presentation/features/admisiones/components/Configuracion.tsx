@@ -67,9 +67,9 @@ export default function ConfiguracionPage() {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Módulo 1: Datos Institución / Año Escolar */}
-        <Card>
+        <Card className="bg-gray-900 text-white" >
           <CardHeader>
-            <CardTitle>Datos Institución / Año Escolar</CardTitle>
+            <CardTitle className="text-xs">Datos Institución / Año Escolar</CardTitle>
           </CardHeader>
 
           <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
