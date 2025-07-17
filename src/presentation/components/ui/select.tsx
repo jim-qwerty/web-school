@@ -1,8 +1,9 @@
+// src/presentation/components/ui/select.tsx
 "use client"
 
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
-import { Check, ChevronDown } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
@@ -63,8 +64,10 @@ export const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       position={position}
+      sideOffset={4}
+      collisionPadding={8}
       className={cn(
-        "overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md",
+        "overflow-hidden rounded-md border bg-white text-popover-foreground shadow-md z-[1000]",
         className
       )}
       {...props}
@@ -84,15 +87,14 @@ export const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-sm px-8 py-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex w-full cursor-default select-none items-center rounded-sm px-3 py-2 text-xs outline-none",
+      /* fondo y texto cuando está seleccionado */
+      "data-[state=checked]:bg-blue-100 data-[state=checked]:text-blue-800",
       className
     )}
     {...props}
   >
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-    <SelectPrimitive.ItemIndicator className="absolute left-2 inline-flex items-center">
-      <Check className="h-4 w-4" />
-    </SelectPrimitive.ItemIndicator>
   </SelectPrimitive.Item>
 ))
 SelectItem.displayName = SelectPrimitive.Item.displayName

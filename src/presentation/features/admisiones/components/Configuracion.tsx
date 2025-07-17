@@ -1,18 +1,40 @@
-import  { useState } from 'react'
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/presentation/components/ui/card'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/presentation/components/ui/tabs'
-import { Label } from '@/presentation/components/ui/label'
-import { Input } from '@/presentation/components/ui/input'
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/presentation/components/ui/select'
-import { Button } from '@/presentation/components/ui/button'
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/presentation/components/ui/table'
-import { Plus, Upload } from 'lucide-react'
+// src/presentation/features/admisiones/components/Configuracion.tsx
+"use client"
+
+import { useState } from "react"
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/presentation/components/ui/card"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/presentation/components/ui/tabs"
+import { Label } from "@/presentation/components/ui/label"
+import { Input } from "@/presentation/components/ui/input"
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/presentation/components/ui/select"
+import { Button } from "@/presentation/components/ui/button"
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/presentation/components/ui/table"
+import { Plus, Upload } from "lucide-react"
 
 export default function ConfiguracionPage() {
   // Estado para manejar múltiples códigos modulares
-  const [codigos, setCodigos] = useState<string[]>([''])
+  const [codigos, setCodigos] = useState<string[]>([""])
 
-  const agregarCodigo = () => setCodigos([...codigos, ''])
+  const agregarCodigo = () => setCodigos([...codigos, ""])
   const actualizarCodigo = (index: number, value: string) => {
     const nuevos = [...codigos]
     nuevos[index] = value
@@ -22,15 +44,16 @@ export default function ConfiguracionPage() {
   return (
     <div className="px-5 py-2 space-y-2">
       <h1 className="text-lg font-bold">Configuración</h1>
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Módulo 1: Datos Institución / Año Escolar */}
         <Card>
           <CardHeader>
             <CardTitle>Datos Institución / Año Escolar</CardTitle>
           </CardHeader>
+
           <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Campo dinámico de códigos modulares */}
+            {/* Códigos Modulares */}
             <div className="col-span-1 md:col-span-2 space-y-1">
               <Label>Códigos Modulares</Label>
               {codigos.map((codigo, idx) => (
@@ -41,64 +64,80 @@ export default function ConfiguracionPage() {
                   placeholder="Ej. 12345"
                 />
               ))}
+              {/* Aquí usamos agregarCodigo */}
               <Button
                 variant="outline"
                 size="sm"
-                onClick={agregarCodigo}
                 className="mt-2"
+                onClick={agregarCodigo}
               >
                 <Plus className="mr-2 h-4 w-4" />
                 Agregar Código
               </Button>
             </div>
 
-            {/* Campos estáticos */}
+            {/* Nombre IE */}
             <div className="space-y-1">
               <Label htmlFor="nombre">Nombre de la IE</Label>
               <Input id="nombre" placeholder="Ej. Colegio Nacional" />
             </div>
+
+            {/* Dirección */}
             <div className="space-y-1">
               <Label htmlFor="direccion">Dirección</Label>
               <Input id="direccion" placeholder="Dirección completa" />
             </div>
+
+            {/* Año Lectivo */}
             <div className="space-y-1">
               <Label htmlFor="anio">Año Lectivo</Label>
-              <Select>
-                <SelectTrigger id="anio">
-                  <SelectValue placeholder="Seleccione año" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="2024">2024</SelectItem>
-                  <SelectItem value="2025">2025</SelectItem>
-                  <SelectItem value="2026">2026</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="relative">
+                <Select>
+                  <SelectTrigger id="anio" className="w-full">
+                    <SelectValue placeholder="Seleccione año" />
+                  </SelectTrigger>
+                  <SelectContent className="w-full">
+                    <SelectItem value="2024">2024</SelectItem>
+                    <SelectItem value="2025">2025</SelectItem>
+                    <SelectItem value="2026">2026</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
+
+            {/* Fases */}
             <div className="space-y-1">
               <Label htmlFor="fases">Fases</Label>
-              <Select>
-                <SelectTrigger id="fases">
-                  <SelectValue placeholder="I, II" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="I">Fase I</SelectItem>
-                  <SelectItem value="II">Fase II</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="relative">
+                <Select>
+                  <SelectTrigger id="fases" className="w-full">
+                    <SelectValue placeholder="I, II" />
+                  </SelectTrigger>
+                  <SelectContent className="w-full">
+                    <SelectItem value="I">Fase I</SelectItem>
+                    <SelectItem value="II">Fase II</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
+
+            {/* Periodos Evaluación */}
             <div className="space-y-1">
               <Label htmlFor="periodos">Periodos Evaluación</Label>
-              <Select>
-                <SelectTrigger id="periodos">
-                  <SelectValue placeholder="Bimestres/Trimestres" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="bimestres">Bimestres</SelectItem>
-                  <SelectItem value="trimestres">Trimestres</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="relative">
+                <Select>
+                  <SelectTrigger id="periodos" className="w-full">
+                    <SelectValue placeholder="Bimestres/Trimestres" />
+                  </SelectTrigger>
+                  <SelectContent className="w-full">
+                    <SelectItem value="bimestres">Bimestres</SelectItem>
+                    <SelectItem value="trimestres">Trimestres</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </CardContent>
+
           <CardFooter>
             <Button>Guardar Datos</Button>
           </CardFooter>
@@ -114,6 +153,7 @@ export default function ConfiguracionPage() {
               </TabsList>
             </Tabs>
           </CardHeader>
+
           <CardContent>
             <Tabs defaultValue="grados">
               <TabsContent value="grados">
@@ -150,7 +190,12 @@ export default function ConfiguracionPage() {
                   <Upload className="h-5 w-5" />
                   <Label htmlFor="plantilla">Subir Nueva Plantilla</Label>
                 </div>
-                <Input id="plantilla" type="file" accept=".xlsx,.docx" className="mb-4" />
+                <Input
+                  id="plantilla"
+                  type="file"
+                  accept=".xlsx,.docx"
+                  className="mb-4"
+                />
                 <Table>
                   <TableHeader>
                     <TableRow>
