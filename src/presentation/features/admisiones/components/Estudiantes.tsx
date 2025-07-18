@@ -1,110 +1,192 @@
-// src/presentation/features/admisiones/components/Estudiantes.tsx
-import { useState } from 'react'
+"use client"
 
-interface Estudiante {
-  documento: string
-  apellidos: string
-  nombres: string
-  fechaNacimiento: string
-  sexo: string
-  ubigeo: string
-  lenguaMaterna: string
-  segundaLengua: string
-  peso: number
-  talla: number
-  alergias: string
-  discapacidad: string
+import { useState } from "react"
+import { Eye, Trash2, Plus, X } from "lucide-react"
+import {
+  Table, TableHeader, TableRow, TableHead, TableBody, TableCell
+} from "@/presentation/components/ui/table"
+import { Input } from "@/presentation/components/ui/input"
+import { Label } from "@/presentation/components/ui/label"
+import { Button } from "@/presentation/components/ui/button"
+
+interface Alumno {
+  id: string
+  nombre: string
+  seccion: string
+  grado: number
+  telefono: string
+  direccion: string
+  foto?: string
 }
 
-export default function Estudiantes() {
-  const [ficha, setFicha] = useState<Estudiante>({
-    documento: '', apellidos: '', nombres: '', fechaNacimiento: '', sexo: '',
-    ubigeo: '', lenguaMaterna: '', segundaLengua: '', peso: 0, talla: 0,
-    alergias: '', discapacidad: ''
+const alumnosIniciales: Alumno[] = [
+  {
+    id: "S293847",
+    nombre: "Evan Ward",
+    seccion: "2A",
+    grado: 2,
+    telefono: "987-654-321",
+    direccion: "456 Oak Ave, Maplewood",
+    foto: "https://i.pravatar.cc/150?img=1",
+  },
+]
+
+export default function AlumnosPage() {
+  const [alumnos, setAlumnos] = useState<Alumno[]>(alumnosIniciales)
+  const [modalOpen, setModalOpen] = useState(false)
+
+  const [nuevo, setNuevo] = useState({
+    dni: "",
+    nombres: "",
+    fechaNacimiento: "",
+    sexo: "",
+    nivel: "",
+    grado: "",
+    seccion: "",
+    direccion: "",
   })
-  const [filtros, setFiltros] = useState({ grado: '', seccion: '', estado: '' })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setNuevo({ ...nuevo, [e.target.name]: e.target.value })
+  }
+
+  const guardarAlumno = () => {
+    const nuevoAlumno: Alumno = {
+      id: `S${Math.floor(Math.random() * 1000000)}`,
+      nombre: nuevo.nombres,
+      seccion: nuevo.seccion,
+      grado: Number(nuevo.grado),
+      telefono: "—",
+      direccion: nuevo.direccion,
+      foto: "https://i.pravatar.cc/150?u=" + nuevo.dni,
+    }
+    setAlumnos([...alumnos, nuevoAlumno])
+    setNuevo({
+      dni: "", nombres: "", fechaNacimiento: "", sexo: "", nivel: "",
+      grado: "", seccion: "", direccion: ""
+    })
+    setModalOpen(false)
+  }
 
   return (
-    <div className="p-6 space-y-8">
-      <h1 className="text-2xl font-bold">Estudiantes</h1>
+    <div className="p-6 relative">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold text-gray-800">Todos los Alumnos</h2>
+        <Button onClick={() => setModalOpen(true)} className="flex gap-2">
+          <Plus className="w-4 h-4" />
+          Agregar Alumno
+        </Button>
+      </div>
 
-      {/* Ficha única */}
-      <section className="bg-white p-4 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">Ficha única (SIAGIE)</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <label className="flex flex-col">
-            <span>Código/DNI</span>
-            <input className="mt-1 p-2 border rounded" value={ficha.documento} onChange={e=>setFicha({...ficha, documento:e.target.value})}/>
-          </label>
-          <label className="flex flex-col">
-            <span>Apellidos</span>
-            <input className="mt-1 p-2 border rounded" value={ficha.apellidos} onChange={e=>setFicha({...ficha, apellidos:e.target.value})}/>
-          </label>
-          <label className="flex flex-col">
-            <span>Nombres</span>
-            <input className="mt-1 p-2 border rounded" value={ficha.nombres} onChange={e=>setFicha({...ficha, nombres:e.target.value})}/>
-          </label>
-          <label className="flex flex-col">
-            <span>Fecha de Nacimiento</span>
-            <input type="date" className="mt-1 p-2 border rounded" value={ficha.fechaNacimiento} onChange={e=>setFicha({...ficha, fechaNacimiento:e.target.value})}/>
-          </label>
-          <label className="flex flex-col">
-            <span>Sexo</span>
-            <select className="mt-1 p-2 border rounded" value={ficha.sexo} onChange={e=>setFicha({...ficha, sexo:e.target.value})}>
-              <option value="">Seleccione</option>
-              <option value="M">Masculino</option>
-              <option value="F">Femenino</option>
-            </select>
-          </label>
-          <label className="flex flex-col">
-            <span>Ubigeo de Nacimiento</span>
-            <input className="mt-1 p-2 border rounded" value={ficha.ubigeo} onChange={e=>setFicha({...ficha, ubigeo:e.target.value})}/>
-          </label>
-          <label className="flex flex-col">
-            <span>Lengua Materna</span>
-            <input className="mt-1 p-2 border rounded" value={ficha.lenguaMaterna} onChange={e=>setFicha({...ficha, lenguaMaterna:e.target.value})}/>
-          </label>
-          <label className="flex flex-col">
-            <span>Segunda Lengua</span>
-            <input className="mt-1 p-2 border rounded" value={ficha.segundaLengua} onChange={e=>setFicha({...ficha, segundaLengua:e.target.value})}/>
-          </label>
-          <label className="flex flex-col">
-            <span>Peso (kg)</span>
-            <input type="number" className="mt-1 p-2 border rounded" value={ficha.peso} onChange={e=>setFicha({...ficha, peso:+e.target.value})}/>
-          </label>
-          <label className="flex flex-col">
-            <span>Talla (cm)</span>
-            <input type="number" className="mt-1 p-2 border rounded" value={ficha.talla} onChange={e=>setFicha({...ficha, talla:+e.target.value})}/>
-          </label>
-          <label className="flex flex-col md:col-span-2">
-            <span>Alergias</span>
-            <input className="mt-1 p-2 border rounded" value={ficha.alergias} onChange={e=>setFicha({...ficha, alergias:e.target.value})}/>
-          </label>
-          <label className="flex flex-col md:col-span-2">
-            <span>Discapacidad</span>
-            <input className="mt-1 p-2 border rounded" value={ficha.discapacidad} onChange={e=>setFicha({...ficha, discapacidad:e.target.value})}/>
-          </label>
-        </div>
-      </section>
+      {/* Tabla de alumnos */}
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Info</TableHead>
+            <TableHead>ID</TableHead>
+            <TableHead>Grado</TableHead>
+            <TableHead>Teléfono</TableHead>
+            <TableHead>Dirección</TableHead>
+            <TableHead className="text-center">Acciones</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {alumnos.map((alumno) => (
+            <TableRow key={alumno.id}>
+              <TableCell>
+                <div className="flex items-center gap-3">
+                  <img
+                    src={alumno.foto}
+                    alt="Foto"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="font-semibold text-gray-800">{alumno.nombre}</p>
+                    <span className="text-sm text-gray-500">{alumno.seccion}</span>
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell>{alumno.id}</TableCell>
+              <TableCell>{alumno.grado}</TableCell>
+              <TableCell>{alumno.telefono}</TableCell>
+              <TableCell>{alumno.direccion}</TableCell>
+              <TableCell>
+                <div className="flex justify-center gap-2">
+                  <Button size="sm" variant="ghost">
+                    <Eye className="w-4 h-4" />
+                  </Button>
+                  <Button size="sm" variant="ghost" className="text-red-500">
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
-      {/* Búsqueda y filtros */}
-      <section className="bg-white p-4 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">Búsqueda y Filtros</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <input className="p-2 border rounded" placeholder="Grado" value={filtros.grado} onChange={e=>setFiltros({...filtros, grado:e.target.value})}/>
-          <input className="p-2 border rounded" placeholder="Sección" value={filtros.seccion} onChange={e=>setFiltros({...filtros, seccion:e.target.value})}/>
-          <input className="p-2 border rounded" placeholder="Estado Matrícula" value={filtros.estado} onChange={e=>setFiltros({...filtros, estado:e.target.value})}/>
-        </div>
-      </section>
+      {/* Modal personalizado con fondo oscuro global */}
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-xl shadow-lg">
+            <header className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Agregar Alumno</h2>
+              <button onClick={() => setModalOpen(false)}>
+                <X className="h-5 w-5 text-gray-600" />
+              </button>
+            </header>
 
-      {/* Plantillas */}
-      <section className="bg-white p-4 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">Plantillas</h2>
-        <div className="space-x-2">
-          <button className="px-4 py-2 border rounded hover:bg-gray-100">Agregar Plantilla</button>
-          <button className="px-4 py-2 border rounded hover:bg-gray-100">Ver Plantillas</button>
+            <form onSubmit={(e) => {
+              e.preventDefault()
+              guardarAlumno()
+            }} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>DNI</Label>
+                  <Input name="dni" value={nuevo.dni} onChange={handleChange} required />
+                </div>
+                <div>
+                  <Label>Apellidos y Nombres</Label>
+                  <Input name="nombres" value={nuevo.nombres} onChange={handleChange} required />
+                </div>
+                <div>
+                  <Label>Fecha de Nacimiento</Label>
+                  <Input type="date" name="fechaNacimiento" value={nuevo.fechaNacimiento} onChange={handleChange} required />
+                </div>
+                <div>
+                  <Label>Sexo</Label>
+                  <select name="sexo" value={nuevo.sexo} onChange={handleChange} className="w-full border rounded px-2 py-1">
+                    <option value="">Seleccione</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                  </select>
+                </div>
+                <div>
+                  <Label>Nivel Educativo</Label>
+                  <Input name="nivel" value={nuevo.nivel} onChange={handleChange} required />
+                </div>
+                <div>
+                  <Label>Grado</Label>
+                  <Input name="grado" value={nuevo.grado} onChange={handleChange} required />
+                </div>
+                <div>
+                  <Label>Sección</Label>
+                  <Input name="seccion" value={nuevo.seccion} onChange={handleChange} required />
+                </div>
+                <div className="col-span-2">
+                  <Label>Dirección</Label>
+                  <Input name="direccion" value={nuevo.direccion} onChange={handleChange} required />
+                </div>
+              </div>
+
+              <footer className="flex justify-end gap-2 mt-4">
+                <Button variant="outline" onClick={() => setModalOpen(false)}>Cancelar</Button>
+                <Button type="submit">Guardar</Button>
+              </footer>
+            </form>
+          </div>
         </div>
-      </section>
+      )}
     </div>
   )
 }

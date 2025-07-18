@@ -6,7 +6,7 @@ export default function Topbar() {
     <header className="flex items-center justify-between h-14 px-6 bg-white border-b">
       {/* Logo y nombre */}
       <div className="flex items-center">
-        <img src="" alt="SchoolLama" className="w-6 h-6 mr-2" />
+        <img alt="SchoolLama" className="w-6 h-6 mr-2" />
         <span className="text-lg font-semibold text-gray-800">School</span>
       </div>
 
