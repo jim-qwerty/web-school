@@ -14,6 +14,7 @@ const Estudiantes            = lazy(() => import('./features/admisiones/componen
 const Apoderados             = lazy(() => import('./features/admisiones/components/Apoderados'))
 const Admision               = lazy(() => import('./features/admisiones/components/Admision'))
 const Matricula              = lazy(() => import('./features/admisiones/components/Matricula'))
+const Mensualidad              = lazy(() => import('./features/admisiones/components/Mensualidad'))
 const Traslados              = lazy(() => import('./features/admisiones/components/RectificadosTraslados'))
 const Usuarios               = lazy(() => import('./features/admisiones/components/Usuarios'))
 
@@ -52,6 +53,7 @@ export default function App() {
             <Route path="apoderados" element={<Apoderados />} />
             <Route path="admision" element={<Admision />} />
             <Route path="matricula" element={<Matricula />} />
+            <Route path="mensualidad" element={<Mensualidad />} />
             <Route path="traslados" element={<Traslados />} />
             <Route path="usuarios" element={<Usuarios />} />
           </Route>

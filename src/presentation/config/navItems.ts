@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import type { NavItem } from '../types'
 
+//Nombre
 export const admisionesNav: NavItem[] = [
   { name: 'Dashboard',     href: 'dashboard',             icon: HomeIcon },
   { name: 'Configuración', href: 'configuracion', icon: CogIcon },
@@ -15,6 +16,7 @@ export const admisionesNav: NavItem[] = [
   { name: 'Apoderados',    href: 'apoderados',   icon: UsersIcon },
   { name: 'Admisión',      href: 'admision',     icon: BookOpenIcon },
   { name: 'Matrícula',     href: 'matricula',    icon: CalendarIcon },
+  { name: 'Mensualidad',     href: 'mensualidad',    icon: CalendarIcon },
   { name: 'Traslados',     href: 'traslados',    icon: CogIcon },
   { name: 'Usuarios',      href: 'usuarios',     icon: UsersIcon },
 ]

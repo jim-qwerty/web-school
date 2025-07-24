@@ -109,13 +109,13 @@ export default function MatriculaPage() {
           </DialogTrigger>
           <DialogPortal>
             <DialogOverlay />
-            <DialogContent
-              className="
+            <DialogContent 
+              className=" bg-gray-900 text-white
                 fixed left-1/2 top-1/2 z-50
                 w-[90vw] sm:w-[80vw] md:w-[70vw] lg:w-[60vw] xl:w-[50vw]
                 max-h-[90vh] overflow-y-auto
                 translate-x-[-50%] translate-y-[-50%]
-                grid gap-4 border bg-white p-6 shadow-lg rounded-lg
+                grid gap-4 border p-6 shadow-lg rounded-lg
               "
             >
               <DialogHeader>
