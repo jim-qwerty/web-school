@@ -1,6 +1,13 @@
 // src/presentation/types.ts
+import type { ComponentType, SVGProps } from 'react'
+
 export interface NavItem {
+  /** Texto a mostrar */
   name: string
-  href: string     // ruta _relativa_ dentro del subsistema
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  /** Ruta relativa dentro del subsistema */
+  href: string
+  /** Icono SVG */
+  icon: ComponentType<SVGProps<SVGSVGElement>>
+  /** Sub-menú desplegable (opcional) */
+  children?: NavItem[]
 }
