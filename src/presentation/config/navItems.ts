@@ -19,6 +19,7 @@ export const admisionesNav: NavItem[] = [
   { name: 'Mensualidad',     href: 'mensualidad',    icon: CalendarIcon },
   { name: 'Traslados',     href: 'traslados',    icon: CogIcon },
   { name: 'Usuarios',      href: 'usuarios',     icon: UsersIcon },
+  { name: 'Docentes',      href: 'docentes',     icon: UsersIcon },
 ]
 
 export const gestionAcademicaNav: NavItem[] = [
