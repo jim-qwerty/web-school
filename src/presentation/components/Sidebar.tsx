@@ -1,33 +1,40 @@
-import { NavLink, useLocation } from 'react-router-dom'
-import { useState } from 'react'
-import { ChevronDown } from 'lucide-react'
-import type { NavItem } from '../types'
+"use client";
+
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { ChevronDown, LogOut } from 'lucide-react';
+import type { NavItem } from '../types';
 
 interface SidebarProps {
-  items: NavItem[]
-  basePath: string
+  items: NavItem[];
+  basePath: string;
 }
 
 export default function Sidebar({ items, basePath }: SidebarProps) {
-  const { pathname } = useLocation()
-  const [expanded, setExpanded] = useState<string | null>(null)
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   const handleToggle = (href: string) => {
-    setExpanded(expanded === href ? null : href)
-  }
+    setExpanded(expanded === href ? null : href);
+  };
+
+  const handleLogout = () => {
+    // TODO: clear authentication tokens or context here
+    navigate('/login');
+  };
 
   return (
-    // font-sans hereda Inter vía tu configuración global
     <aside className="flex flex-col w-52 h-screen px-3 py-6 bg-white border-r font-sans">
       <h2 className="text-xl font-semibold text-gray-800 mb-6">School Jim</h2>
       <nav className="flex-1 overflow-y-auto">
         <ul className="space-y-1.5">
           {items.map(item => {
-            const fullPath = `${basePath}/${item.href}`
-            const isActive = pathname === fullPath || pathname.startsWith(`${fullPath}/`)
-            const Icon = item.icon
-            const hasChildren = Array.isArray(item.children) && item.children.length > 0
-            const isExpanded = expanded === item.href
+            const fullPath = `${basePath}/${item.href}`;
+            const isActive = pathname === fullPath || pathname.startsWith(`${fullPath}/`);
+            const Icon = item.icon;
+            const hasChildren = Array.isArray(item.children) && item.children.length > 0;
+            const isExpanded = expanded === item.href;
 
             return (
               <li key={item.href}>
@@ -60,7 +67,7 @@ export default function Sidebar({ items, basePath }: SidebarProps) {
                 {hasChildren && isExpanded && (
                   <ul className="ml-6 mt-1 space-y-1">
                     {item.children!.map(child => {
-                      const childPath = `${basePath}/${child.href}`
+                      const childPath = `${basePath}/${child.href}`;
                       return (
                         <li key={child.href}>
                           <NavLink
@@ -73,15 +80,22 @@ export default function Sidebar({ items, basePath }: SidebarProps) {
                             {child.name}
                           </NavLink>
                         </li>
-                      )
+                      );
                     })}
                   </ul>
                 )}
               </li>
-            )
+            );
           })}
         </ul>
       </nav>
+      <button
+        onClick={handleLogout}
+        className="flex items-center px-2 py-1 mt-4 rounded-lg text-xs font-normal text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+      >
+        <LogOut className="w-3.5 h-3.5 mr-3" />
+        Cerrar sesión
+      </button>
     </aside>
-  )
+  );
 }

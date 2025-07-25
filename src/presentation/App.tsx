@@ -15,9 +15,10 @@ const Apoderados             = lazy(() => import('./features/admisiones/componen
 const Admision               = lazy(() => import('./features/admisiones/components/Admision'))
 const Matricula              = lazy(() => import('./features/admisiones/components/Matricula'))
 const Mensualidad              = lazy(() => import('./features/admisiones/components/Mensualidad'))
-const Traslados              = lazy(() => import('./features/admisiones/components/RectificadosTraslados'))
+const Notas              = lazy(() => import('./features/admisiones/components/Notas'))
 const Usuarios               = lazy(() => import('./features/admisiones/components/Usuarios'))
 const Docentes               = lazy(() => import('./features/admisiones/components/Docentes'))
+
 
 // ——————— GESTIÓN ACADÉMICA ———————
 const GestionAcademicaPage   = lazy(() => import('./features/gestion-academica/components/gestionAcademica'))
@@ -55,9 +56,10 @@ export default function App() {
             <Route path="admision" element={<Admision />} />
             <Route path="matricula" element={<Matricula />} />
             <Route path="mensualidad" element={<Mensualidad />} />
-            <Route path="traslados" element={<Traslados />} />
+            
             <Route path="usuarios" element={<Usuarios />} />
             <Route path="docentes" element={<Docentes />} />
+            <Route path="Notas" element={<Notas />} />
           </Route>
 
           {/* 3. Sección GESTIÓN ACADÉMICA */}
