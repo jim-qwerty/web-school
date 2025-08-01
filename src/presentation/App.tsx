@@ -1,11 +1,11 @@
 // src/presentation/App.tsx
-import { Suspense, lazy } from 'react'
+import  { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import SidebarLayout from './layouts/SidebarLayout'
 import { admisionesNav } from './config/navItems'
 
 const LoginPage      = lazy(() => import('./features/auth/components/LoginPage'))
-const AdmisionesPage = lazy(() => import('./features/dashboard/Dashboard'))
+const DashboardPage  = lazy(() => import('./features/dashboard/Dashboard'))
 const Configuracion  = lazy(() => import('./features/configuracion/Configuracion'))
 const Estudiantes    = lazy(() => import('./features/alumnos/Estudiantes'))
 const Apoderados     = lazy(() => import('./features/apoderados/Apoderados'))
@@ -26,23 +26,17 @@ export default function App() {
         }
       >
         <Routes>
-          {/* 1) Entrar siempre al login en "/" */}
+          {/** 1) Raíz “/” → siempre login */}
           <Route path="/" element={<Navigate to="/login" replace />} />
+
+          {/** 2) Página de login */}
           <Route path="/login" element={<LoginPage />} />
 
-          {/* 2) Rutas protegidas envueltas en SidebarLayout */}
-          <Route
-            element={
-              <SidebarLayout
-                items={admisionesNav}
-                basePath=""      // <- IMPORTANTE: vacío, no "/"
-              />
-            }
-          >
-            {/* Si vas a "/" dentro de este wrapper, redirige a "dashboard" */}
-            <Route index element={<Navigate to="dashboard" replace />} />
-
-            <Route path="dashboard"     element={<AdmisionesPage />} />
+          {/**
+            3) Rutas protegidas: layout sin path para no capturar la raíz
+          **/}
+          <Route element={<SidebarLayout items={admisionesNav} basePath="" />}>
+            <Route path="dashboard"     element={<DashboardPage />} />
             <Route path="configuracion" element={<Configuracion />} />
             <Route path="estudiantes"   element={<Estudiantes />} />
             <Route path="apoderados"    element={<Apoderados />} />
@@ -51,10 +45,10 @@ export default function App() {
             <Route path="notas"         element={<Notas />} />
             <Route path="usuarios"      element={<Usuarios />} />
             <Route path="docentes"      element={<Docentes />} />
-          </Route>
 
-          {/* 3) Cualquier otra ruta → login */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
+            {/** 4) Cualquier otra ruta → redirigir a login */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Route>
         </Routes>
       </Suspense>
     </BrowserRouter>
