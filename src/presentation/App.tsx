@@ -2,26 +2,18 @@
 import { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import SidebarLayout from './layouts/SidebarLayout'
-import { admisionesNav, gestionAcademicaNav } from './config/navItems'
+import { admisionesNav } from './config/navItems'
 
-const LoginPage              = lazy(() => import('./features/auth/components/LoginPage'))
-const SubsystemDashboard     = lazy(() => import('./features/dashboard/components/SubsystemDashboard'))
-
-// ——————— ADMISIONES ———————
-const AdmisionesPage         = lazy(() => import('./features/admisiones/components/Dashboard'))
-const Configuracion          = lazy(() => import('./features/admisiones/components/Configuracion'))
-const Estudiantes            = lazy(() => import('./features/admisiones/components/Estudiantes'))
-const Apoderados             = lazy(() => import('./features/admisiones/components/Apoderados'))
-const Admision               = lazy(() => import('./features/admisiones/components/Admision'))
-const Matricula              = lazy(() => import('./features/admisiones/components/Matricula'))
-const Mensualidad              = lazy(() => import('./features/admisiones/components/Mensualidad'))
-const Notas              = lazy(() => import('./features/admisiones/components/Notas'))
-const Usuarios               = lazy(() => import('./features/admisiones/components/Usuarios'))
-const Docentes               = lazy(() => import('./features/admisiones/components/Docentes'))
-
-
-// ——————— GESTIÓN ACADÉMICA ———————
-const GestionAcademicaPage   = lazy(() => import('./features/gestion-academica/components/gestionAcademica'))
+const LoginPage      = lazy(() => import('./features/auth/components/LoginPage'))
+const AdmisionesPage = lazy(() => import('./features/dashboard/Dashboard'))
+const Configuracion  = lazy(() => import('./features/configuracion/Configuracion'))
+const Estudiantes    = lazy(() => import('./features/alumnos/Estudiantes'))
+const Apoderados     = lazy(() => import('./features/apoderados/Apoderados'))
+const Matricula      = lazy(() => import('./features/matricula/Matricula'))
+const Mensualidad    = lazy(() => import('./features/mensualidad/Mensualidad'))
+const Notas          = lazy(() => import('./features/notas/Notas'))
+const Usuarios       = lazy(() => import('./features/usuarios/Usuarios'))
+const Docentes       = lazy(() => import('./features/docentes/Docentes'))
 
 export default function App() {
   return (
@@ -34,63 +26,35 @@ export default function App() {
         }
       >
         <Routes>
-          {/* 1. Rutas públicas */}
+          {/* 1) Entrar siempre al login en "/" */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<SubsystemDashboard />} />
 
-          {/* 2. Sección ADMISIONES */}
+          {/* 2) Rutas protegidas envueltas en SidebarLayout */}
           <Route
-            path="admisiones/*"
             element={
               <SidebarLayout
                 items={admisionesNav}
-                basePath="/admisiones"
+                basePath=""      // <- IMPORTANTE: vacío, no "/"
               />
             }
           >
-            <Route index element={<AdmisionesPage />} />
-            <Route path="dashboard" element={<AdmisionesPage />} />
+            {/* Si vas a "/" dentro de este wrapper, redirige a "dashboard" */}
+            <Route index element={<Navigate to="dashboard" replace />} />
+
+            <Route path="dashboard"     element={<AdmisionesPage />} />
             <Route path="configuracion" element={<Configuracion />} />
-            <Route path="estudiantes" element={<Estudiantes />} />
-            <Route path="apoderados" element={<Apoderados />} />
-            <Route path="admision" element={<Admision />} />
-            <Route path="matricula" element={<Matricula />} />
-            <Route path="mensualidad" element={<Mensualidad />} />
-            
-            <Route path="usuarios" element={<Usuarios />} />
-            <Route path="docentes" element={<Docentes />} />
-            <Route path="Notas" element={<Notas />} />
+            <Route path="estudiantes"   element={<Estudiantes />} />
+            <Route path="apoderados"    element={<Apoderados />} />
+            <Route path="matricula"     element={<Matricula />} />
+            <Route path="mensualidad"   element={<Mensualidad />} />
+            <Route path="notas"         element={<Notas />} />
+            <Route path="usuarios"      element={<Usuarios />} />
+            <Route path="docentes"      element={<Docentes />} />
           </Route>
 
-          {/* 3. Sección GESTIÓN ACADÉMICA */}
-          <Route
-            path="gestion-academica/*"
-            element={
-              <SidebarLayout
-                items={gestionAcademicaNav}
-                basePath="/gestion-academica"
-              />
-            }
-          >
-            <Route index element={<GestionAcademicaPage />} />
-            {/* hijos de Gestión Académica */}
-          </Route>
-
-          {/* 4. Sección RRHH (comentada) */}
-          {/* <Route
-            path="rrhh/*"
-            element={
-              <SidebarLayout
-                items={rrhhNav}
-                basePath="/rrhh"
-              />
-            }
-          >
-            <Route index element={<RRHHPage />} />
-          </Route> */}
-
-          {/* 5. Cualquier otra ruta */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* 3) Cualquier otra ruta → login */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
